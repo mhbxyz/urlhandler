@@ -146,6 +146,29 @@ class URLHandler:
             if self.has_fragment:
                 self.fragment = self._fragment_regex.search(url).group('fragment')
 
+    def _get_query_string(self) -> str or None:
+
+        params: list = []
+
+        if self.query is not None:
+            for key, value in self.query.items():
+                if type(value) is dict:
+                    value = json.dumps(value).replace(' ', '')
+                else:
+                    if type(value) is int or type(value) is float:
+                        value = str(value)
+                    else:
+                        if value is None:
+                            value = 'null'
+                        elif value is True:
+                            value = 'true'
+                        elif value is False:
+                            value = 'false'
+                params.append(f'{key}={value}')
+
+            return '&'.join(params)
+        return None
+
     def get_url(self):
 
         url: str
@@ -155,7 +178,7 @@ class URLHandler:
         url += self.host if self.host is not None else ''
         url += f':{self.port}' if self.port is not None else ''
         url += f'/{self.path}' if self.path is not None else ''
-        url += f'?{json.dumps(self.query)}' if self.user_info is not None else ''
+        url += f'?{self._get_query_string()}' if self.query is not None else ''
         url += f'#{self.fragment}' if self.fragment is not None else ''
 
         return url
