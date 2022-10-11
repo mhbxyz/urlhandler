@@ -30,7 +30,8 @@ class URLHandler:
     _host_regex = {'://': re.compile(r'://(?P<host>[\w.]+)[/|$]?'), '@': re.compile(r'@(?P<host>[\w.]+)[/|$]?')}
     _host_start_character = '://'
     _port_regex = re.compile(r':(?P<port>\d+)[/|$]?')
-    _path_regex = r''
+    _path_regex = {'': re.compile(r'[^/]/(?P<path>\w.+)$'), '?': re.compile(r'[^/]/(?P<path>\w.+)\?')}
+    _path_end_character = ''
     _query_regex = r''
     _fragment_regex = r''
 
