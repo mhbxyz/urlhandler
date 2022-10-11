@@ -1,4 +1,6 @@
 import re
+import json
+from typing import List
 
 
 class URLFormatError(Exception):
@@ -46,8 +48,24 @@ class URLHandler:
     _query_end_character = ''
     _fragment_regex = re.compile(r'#(?P<fragment>\w.+)$')
 
-    def _scan_query(self, query: str):
-        pass  # TODO Implement this function
+    def _scan_query(self, query: str) -> dict:
+
+        params: List[str]
+        result: dict = {}
+
+        params = query.split(self.query_param_separator)
+        for param in params:
+
+            name: str
+            value: str or dict
+
+            name, value = param.split('=', maxsplit=1)
+            if value.startswith('{') and value.endswith('}'):
+                value = json.loads(value)
+
+            result.update({name: value})
+
+        return result
 
     def __init__(self, url: str = None, query_param_separator: str = None):
 
