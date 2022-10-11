@@ -40,23 +40,25 @@ class URLHandler:
         if '://' not in url:
             raise URLFormatError(missing='://')
 
-        url = url.strip()
+        if url is not None:
 
-        if '@' in url:
-            self.has_user_info = True
-            self.host_start_character = '@'
-        if url[-1] == '/':
-            self.end_with_slash = True
-        if '?' in url:
-            self.has_query = True
-        if '#' in url:
-            self.has_fragment = True
+            url = url.strip()
 
-        self.scheme = self._scheme_regex.search(url).group('scheme')
-        if self.has_user_info:
-            self.user_info = self._user_info_regex.search(url).groupdict()
-        self.host = self._host_regex[self._host_start_character].search(url).group('host')
-        port_match = self._port_regex.match(url)
-        if port_match is not None:
-            self.has_port = True
-            self.port = port_match.group('port')
+            if '@' in url:
+                self.has_user_info = True
+                self.host_start_character = '@'
+            if url[-1] == '/':
+                self.end_with_slash = True
+            if '?' in url:
+                self.has_query = True
+            if '#' in url:
+                self.has_fragment = True
+
+            self.scheme = self._scheme_regex.search(url).group('scheme')
+            if self.has_user_info:
+                self.user_info = self._user_info_regex.search(url).groupdict()
+            self.host = self._host_regex[self._host_start_character].search(url).group('host')
+            port_match = self._port_regex.match(url)
+            if port_match is not None:
+                self.has_port = True
+                self.port = port_match.group('port')
