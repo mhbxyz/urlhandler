@@ -81,3 +81,6 @@ class URLHandler:
             if port_match is not None:
                 self.has_port = True
                 self.port = port_match.group('port')
+
+            if self.has_fragment:
+                self.fragment = self._fragment_regex.search(url).group('fragment')
