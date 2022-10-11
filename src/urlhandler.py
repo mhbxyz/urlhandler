@@ -1,3 +1,4 @@
+import re
 
 
 class URLHandler:
@@ -17,7 +18,8 @@ class URLHandler:
 
     _SCHEME_REGEX = r'^(?P<scheme>[a-z]+)://'
     _USER_INFO_REGEX = r'://(?P<user>\w+):(?P<password>[\w\W]+)@'
-    _HOST_REGEX = r''
+    _HOST_REGEX = r'{start_character}(?P<host>[\w.]+)[/|$]?'
+    _HOST_START_CHARACTER = '://'
     _PORT_REGEX = r''
     _PATH_REGEX = r''
     _QUERY_REGEX = r''
@@ -29,9 +31,12 @@ class URLHandler:
 
         if '@' in url:
             self.has_user_info = True
+            self._HOST_START_CHARACTER = '@'
         if url[-1] == '/':
             self.end_with_slash = True
         if '?' in url:
             self.has_query = True
         if '#' in url:
             self.has_fragment = True
+
+        self.host = re.search(self._HOST_REGEX.format(start_character=self._HOST_START_CHARACTER), url).group('host')
