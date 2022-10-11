@@ -182,3 +182,6 @@ class URLHandler:
         url += f'#{self.fragment}' if self.fragment is not None else ''
 
         return url
+
+    def __str__(self):
+        return self.get_url()
