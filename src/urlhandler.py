@@ -84,6 +84,17 @@ class URLHandler:
             name, value = param.split('=', maxsplit=1)
             if value.startswith('{') and value.endswith('}'):
                 value = json.loads(value)
+            else:
+                number = self._is_a_number(value)
+                if number is not None:
+                    value = number
+                else:
+                    if value == 'null':
+                        value = None
+                    elif value == 'true':
+                        value = True
+                    elif value == 'false':
+                        value = False
 
             result.update({name: value})
 
