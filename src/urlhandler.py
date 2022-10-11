@@ -48,6 +48,28 @@ class URLHandler:
     _query_end_character = ''
     _fragment_regex = re.compile(r'#(?P<fragment>\w.+)$')
 
+    @staticmethod
+    def _is_a_number(string: str) -> int or float or None:
+
+        number_is_negative: bool = False
+        number_is_integer: bool = True
+        number_str: str
+        number: int or float
+
+        if string.startswith('-'):
+            number_is_negative = True
+
+        if '.' in string:
+            number_is_integer = False
+
+        number_str = string[:-1] if number_is_negative else string
+        try:
+            number = int(number_str) if number_is_integer else float(number_str)
+        except ValueError:
+            return None
+
+        return -number if number_is_negative else number
+
     def _scan_query(self, query: str) -> dict:
 
         params: List[str]
