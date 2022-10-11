@@ -1,16 +1,15 @@
-from urllib.parse import urlparse
 
 
 class URLHandler:
 
     scheme: str = 'https'
-    user_info: str = None
+    user_info: dict = None
     host: str = None
     port: int = None
     path: str = None
-    query: dict = None
+    query: dict = {}
     query_delimiter: str = '&'
-    fragments: list = []
+    fragments: str = None
 
     def __init__(self):
         pass
