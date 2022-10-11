@@ -62,7 +62,7 @@ class URLHandler:
         if '.' in string:
             number_is_integer = False
 
-        number_str = string[:-1] if number_is_negative else string
+        number_str = string[1:] if number_is_negative else string
         try:
             number = int(number_str) if number_is_integer else float(number_str)
         except ValueError:
