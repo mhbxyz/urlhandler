@@ -106,7 +106,7 @@ class URLHandler:
                 self.port = port_match.group('port')
 
             if self.has_query:
-                self.query = self._query_regex[self._query_end_character].search(url).group('query')
+                self.query = self._scan_query(self._query_regex[self._query_end_character].search(url).group('query'))
 
             if self.has_fragment:
                 self.fragment = self._fragment_regex.search(url).group('fragment')
