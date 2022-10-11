@@ -116,7 +116,7 @@ class URLHandler:
 
             if '@' in url:
                 self.has_user_info = True
-                self.host_start_character = '@'
+                self._host_start_character = '@'
             if '?' in url:
                 self.has_query = True
                 self._path_end_character = '?'
@@ -150,7 +150,7 @@ class URLHandler:
 
         url: str
 
-        url = self.scheme
+        url = f'{self.scheme}://'
         url += f'{self.user_info["user"]}:{self.user_info["password"]}@' if self.user_info is not None else ''
         url += self.host if self.host is not None else ''
         url += f':{self.port}' if self.port is not None else ''
