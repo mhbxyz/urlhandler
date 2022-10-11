@@ -29,7 +29,7 @@ class URLHandler:
     _user_info_regex = re.compile(r'://(?P<user>\w+):(?P<password>[\w\W]+)@')
     _host_regex = {'://': re.compile(r'://(?P<host>[\w.]+)[/|$]?'), '@': re.compile(r'@(?P<host>[\w.]+)[/|$]?')}
     _host_start_character = '://'
-    _port_regex = r''
+    _port_regex = re.compile(r':(?P<port>\d+)[/|$]?')
     _path_regex = r''
     _query_regex = r''
     _fragment_regex = r''
