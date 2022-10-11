@@ -17,6 +17,7 @@ class URLHandler:
     has_user_info: bool = False
     host: str = None
     port: int = None
+    has_port: bool = False
     path: str = None
     end_with_slash: bool = False
     query: dict = {}
@@ -55,3 +56,7 @@ class URLHandler:
         if self.has_user_info:
             self.user_info = self._user_info_regex.search(url).groupdict()
         self.host = self._host_regex[self._host_start_character].search(url).group('host')
+        port_match = self._port_regex.match(url)
+        if port_match is not None:
+            self.has_port = True
+            self.port = port_match.group('port')
