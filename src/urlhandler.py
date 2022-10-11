@@ -16,8 +16,8 @@ class URLHandler:
     fragment: str = None
     has_fragment: bool = False
 
-    _SCHEME_REGEX = r'^(?P<scheme>[a-z]+)://'
-    _USER_INFO_REGEX = r'://(?P<user>\w+):(?P<password>[\w\W]+)@'
+    _SCHEME_REGEX = re.compile(r'^(?P<scheme>[a-z]+)://')
+    _USER_INFO_REGEX = re.compile(r'://(?P<user>\w+):(?P<password>[\w\W]+)@')
     _HOST_REGEX = r'{start_character}(?P<host>[\w.]+)[/|$]?'
     _HOST_START_CHARACTER = '://'
     _PORT_REGEX = r''
@@ -39,4 +39,7 @@ class URLHandler:
         if '#' in url:
             self.has_fragment = True
 
+        self.scheme = self._SCHEME_REGEX.search(url).group('scheme')
+        if self.has_user_info:
+            self.user_info = self._USER_INFO_REGEX.search(url).groupdict()
         self.host = re.search(self._HOST_REGEX.format(start_character=self._HOST_START_CHARACTER), url).group('host')
