@@ -16,14 +16,14 @@ class URLHandler:
     fragment: str = None
     has_fragment: bool = False
 
-    _SCHEME_REGEX = re.compile(r'^(?P<scheme>[a-z]+)://')
-    _USER_INFO_REGEX = re.compile(r'://(?P<user>\w+):(?P<password>[\w\W]+)@')
-    _HOST_REGEX = r'{start_character}(?P<host>[\w.]+)[/|$]?'
-    _HOST_START_CHARACTER = '://'
-    _PORT_REGEX = r''
-    _PATH_REGEX = r''
-    _QUERY_REGEX = r''
-    _FRAGMENT_REGEX = r''
+    _scheme_regex = re.compile(r'^(?P<scheme>[a-z]+)://')
+    _user_info_regex = re.compile(r'://(?P<user>\w+):(?P<password>[\w\W]+)@')
+    _host_regex = r'{start_character}(?P<host>[\w.]+)[/|$]?'
+    _host_start_character = '://'
+    _port_regex = r''
+    _path_regex = r''
+    _query_regex = r''
+    _fragment_regex = r''
 
     def __init__(self, url: str = None):
 
@@ -31,7 +31,7 @@ class URLHandler:
 
         if '@' in url:
             self.has_user_info = True
-            self._HOST_START_CHARACTER = '@'
+            self.host_start_character = '@'
         if url[-1] == '/':
             self.end_with_slash = True
         if '?' in url:
@@ -39,7 +39,7 @@ class URLHandler:
         if '#' in url:
             self.has_fragment = True
 
-        self.scheme = self._SCHEME_REGEX.search(url).group('scheme')
+        self.scheme = self._scheme_regex.search(url).group('scheme')
         if self.has_user_info:
-            self.user_info = self._USER_INFO_REGEX.search(url).groupdict()
-        self.host = re.search(self._HOST_REGEX.format(start_character=self._HOST_START_CHARACTER), url).group('host')
+            self.user_info = self._user_info_regex.search(url).groupdict()
+        self.host = re.search(self._host_regex.format(start_character=self._host_start_character), url).group('host')
