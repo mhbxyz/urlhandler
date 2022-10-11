@@ -43,7 +43,11 @@ class URLHandler:
     }
     _path_end_character = ''
     _query_regex = {'': re.compile(r'\?(?P<query>\w.+)$'), '#': re.compile(r'\?(?P<query>\w.+)#')}
+    _query_end_character = ''
     _fragment_regex = re.compile(r'#(?P<fragment>\w.+)$')
+
+    def _scan_query(self, query: str):
+        pass  # TODO Implement this function
 
     def __init__(self, url: str = None, query_param_separator: str = None):
 
@@ -67,6 +71,7 @@ class URLHandler:
                 self._path_end_character = '?'
             if '#' in url:
                 self.has_fragment = True
+                self._query_end_character = '#'
                 if not self.has_query:
                     self._path_end_character = '#'
 
@@ -81,6 +86,9 @@ class URLHandler:
             if port_match is not None:
                 self.has_port = True
                 self.port = port_match.group('port')
+
+            if self.has_query:
+                self.query = self._query_regex[self._query_end_character].search(url).group('query')
 
             if self.has_fragment:
                 self.fragment = self._fragment_regex.search(url).group('fragment')
