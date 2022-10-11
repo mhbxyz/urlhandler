@@ -143,3 +143,17 @@ class URLHandler:
 
             if self.has_fragment:
                 self.fragment = self._fragment_regex.search(url).group('fragment')
+
+    def get_url(self):
+
+        url: str
+
+        url = self.scheme
+        url += f'{self.user_info["user"]}:{self.user_info["password"]}@' if self.user_info is not None else ''
+        url += self.host if self.host is not None else ''
+        url += f':{self.port}' if self.port is not None else ''
+        url += f'/{self.path}' if self.path is not None else ''
+        url += f'?{json.dumps(self.query)}' if self.user_info is not None else ''
+        url += f'#{self.fragment}' if self.fragment is not None else ''
+
+        return url
