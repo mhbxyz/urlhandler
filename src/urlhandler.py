@@ -19,7 +19,6 @@ class URLHandler:
     port: int = None
     has_port: bool = False
     path: str = None
-    end_with_slash: bool = False
     query: dict = {}
     has_query: bool = False
     query_delimiter: str = '&'
@@ -42,13 +41,11 @@ class URLHandler:
 
         if url is not None:
 
-            url = url.strip()
+            url = url.strip('/ ')
 
             if '@' in url:
                 self.has_user_info = True
                 self.host_start_character = '@'
-            if url[-1] == '/':
-                self.end_with_slash = True
             if '?' in url:
                 self.has_query = True
             if '#' in url:
