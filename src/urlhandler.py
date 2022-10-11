@@ -1,6 +1,15 @@
 import re
 
 
+class URLFormatError(Exception):
+
+    def __init__(self, message='The format of you URL is incorrect', **kwargs):
+        self.message = message
+        if 'missing' in kwargs:
+            self.message = f'Your URL is missing {kwargs["missing"]}'
+        super().__init__(self.message)
+
+
 class URLHandler:
 
     scheme: str = 'https'
