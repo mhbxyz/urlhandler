@@ -18,7 +18,7 @@ class URLHandler:
 
     _scheme_regex = re.compile(r'^(?P<scheme>[a-z]+)://')
     _user_info_regex = re.compile(r'://(?P<user>\w+):(?P<password>[\w\W]+)@')
-    _host_regex = r'{start_character}(?P<host>[\w.]+)[/|$]?'
+    _host_regex = {'://': re.compile(r'://(?P<host>[\w.]+)[/|$]?'), '@': re.compile(r'@(?P<host>[\w.]+)[/|$]?')}
     _host_start_character = '://'
     _port_regex = r''
     _path_regex = r''
@@ -42,4 +42,4 @@ class URLHandler:
         self.scheme = self._scheme_regex.search(url).group('scheme')
         if self.has_user_info:
             self.user_info = self._user_info_regex.search(url).groupdict()
-        self.host = re.search(self._host_regex.format(start_character=self._host_start_character), url).group('host')
+        self.host = self._host_regex[self._host_start_character].search(url).group('host')
