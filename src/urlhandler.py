@@ -36,6 +36,9 @@ class URLHandler:
 
     def __init__(self, url: str = None):
 
+        if '://' not in url:
+            raise URLFormatError(missing='://')
+
         url = url.strip()
 
         if '@' in url:
