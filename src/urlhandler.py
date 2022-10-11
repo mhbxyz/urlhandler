@@ -36,8 +36,8 @@ class URLHandler:
         '#': re.compile(r'[^/]/(?P<path>\w.+)#')
     }
     _path_end_character = ''
-    _query_regex = r''
-    _fragment_regex = r''
+    _query_regex = {'': re.compile(r'\?(?P<query>\w.+)$'), '#': re.compile(r'\?(?P<query>\w.+)#')}
+    _fragment_regex = re.compile(r'#(?P<fragment>\w.+)$')
 
     def __init__(self, url: str = None):
 
