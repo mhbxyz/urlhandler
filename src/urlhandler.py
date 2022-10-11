@@ -10,6 +10,12 @@ class URLFormatError(Exception):
         super().__init__(self.message)
 
 
+class InvalidQueryParamSeparatorError(Exception):
+    def __init__(self, query_param_separator: str):
+        self.message = f'{query_param_separator} is not a valid query parameter separator'
+        super().__init__(self.message)
+
+
 class URLHandler:
 
     scheme: str = 'https'
@@ -21,7 +27,7 @@ class URLHandler:
     path: str = None
     query: dict = {}
     has_query: bool = False
-    query_delimiter: str = '&'
+    query_param_separator: str = '&'
     fragment: str = None
     has_fragment: bool = False
 
@@ -39,12 +45,17 @@ class URLHandler:
     _query_regex = {'': re.compile(r'\?(?P<query>\w.+)$'), '#': re.compile(r'\?(?P<query>\w.+)#')}
     _fragment_regex = re.compile(r'#(?P<fragment>\w.+)$')
 
-    def __init__(self, url: str = None):
-
-        if '://' not in url:
-            raise URLFormatError(missing='://')
+    def __init__(self, url: str = None, query_param_separator: str = None):
 
         if url is not None:
+
+            if query_param_separator is not None:
+                if query_param_separator not in ['&', ';']:
+                    raise InvalidQueryParamSeparatorError(query_param_separator)
+                self.query_param_separator = query_param_separator
+
+            if '://' not in url:
+                raise URLFormatError(missing='://')
 
             url = url.strip('/ ')
 
