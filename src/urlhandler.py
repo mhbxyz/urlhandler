@@ -128,7 +128,9 @@ class URLHandler:
 
             self.scheme = self._scheme_regex.search(url).group('scheme')
             self.host = self._host_regex[self._host_start_character].search(url).group('host')
-            self.path = self._path_regex[self._path_end_character].search(url).group('path')
+            path_match = self._path_regex[self._path_end_character].search(url)
+            if path_match is not None:
+                self.path = path_match.group('path')
 
             if self.has_user_info:
                 self.user_info = self._user_info_regex.search(url).groupdict()
