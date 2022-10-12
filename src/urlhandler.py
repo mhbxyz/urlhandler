@@ -174,12 +174,12 @@ class URLHandler:
         url: str
 
         url = f'{self.scheme}://'
-        url += f'{self.user_info["user"]}:{self.user_info["password"]}@' if self.user_info is not None else ''
+        url += f'{self.user_info["user"]}:{self.user_info["password"]}@' if self.has_user_info else ''
         url += self.host if self.host is not None else ''
-        url += f':{self.port}' if self.port is not None else ''
+        url += f':{self.port}' if self.has_port else ''
         url += f'/{"/".join(self._path)}' if self._path is not None else ''
-        url += f'?{self._get_query_string()}' if self._query is not None else ''
-        url += f'#{self.fragment}' if self.fragment is not None else ''
+        url += f'?{self._get_query_string()}' if self.has_query else ''
+        url += f'#{self.fragment}' if self.has_fragment else ''
 
         return url
 
