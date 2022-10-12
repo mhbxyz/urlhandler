@@ -169,15 +169,18 @@ class URLHandler:
             return '&'.join(params)
         return None
 
-    def get_url(self):
+    def get_url(self) -> str or None:
 
         url: str
 
+        if not self.scheme and not self.host:
+            return None
+
         url = f'{self.scheme}://'
         url += f'{self.user_info["user"]}:{self.user_info["password"]}@' if self.has_user_info else ''
-        url += self.host if self.host is not None else ''
+        url += self.host
         url += f':{self.port}' if self.has_port else ''
-        url += f'/{"/".join(self._path)}' if self._path is not None else ''
+        url += f'/{"/".join(self._path)}' if self._path else ''
         url += f'?{self._get_query_string()}' if self.has_query else ''
         url += f'#{self.fragment}' if self.has_fragment else ''
 
