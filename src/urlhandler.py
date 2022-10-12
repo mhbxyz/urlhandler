@@ -185,3 +185,9 @@ class URLHandler:
 
     def __str__(self):
         return self.get_url()
+
+    def add_query_param(self, name, value):
+        self.query.update({name: value})
+
+    def remove_query_param(self, name):
+        self.query.pop(name, None)
