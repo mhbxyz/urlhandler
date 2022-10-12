@@ -191,3 +191,7 @@ class URLHandler:
 
     def remove_query_param(self, name):
         self._query.pop(name, None)
+
+    @property
+    def query(self):
+        return self._get_query_string()
