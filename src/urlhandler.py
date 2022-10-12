@@ -27,6 +27,7 @@ class URLHandler:
     port: int = -1
     has_port: bool = False
     _path: list = []
+    has_path: bool = False
     _query: dict = {}
     has_query: bool = False
     query_param_separator: str = '&'
@@ -131,6 +132,7 @@ class URLHandler:
             path_match = self._path_regex[self._path_end_character].search(url)
             if path_match is not None:
                 self._path = path_match.group('path').split('/')
+                self.has_path = True
 
             if self.has_user_info:
                 self.user_info = self._user_info_regex.search(url).groupdict()
@@ -180,7 +182,7 @@ class URLHandler:
         url += f'{self.user_info["user"]}:{self.user_info["password"]}@' if self.has_user_info else ''
         url += self.host
         url += f':{self.port}' if self.has_port else ''
-        url += f'/{"/".join(self._path)}' if self._path else ''
+        url += f'/{"/".join(self._path)}' if self.has_path else ''
         url += f'?{self._get_query_string()}' if self.has_query else ''
         url += f'#{self.fragment}' if self.has_fragment else ''
 
