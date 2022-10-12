@@ -196,6 +196,14 @@ class URLHandler:
     def query(self) -> str:
         return self._get_query_string()
 
+    @query.setter
+    def query(self, value: str):
+        self._query = self._scan_query(value)
+
+    @query.deleter
+    def query(self):
+        self._query = None
+
     @property
     def path(self) -> str:
         return "/".join(self._path)
