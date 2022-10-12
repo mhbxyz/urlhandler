@@ -195,3 +195,7 @@ class URLHandler:
     @property
     def query(self) -> str:
         return self._get_query_string()
+
+    @property
+    def path(self) -> str:
+        return "/".join(self._path)
