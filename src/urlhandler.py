@@ -21,16 +21,16 @@ class InvalidQueryParamSeparatorError(Exception):
 class URLHandler:
 
     scheme: str = 'https'
-    user_info: dict = None
+    user_info: dict = {}
     has_user_info: bool = False
-    host: str = None
-    port: int = None
+    host: str = ''
+    port: int = -1
     has_port: bool = False
-    _path: list = None
+    _path: list = []
     _query: dict = {}
     has_query: bool = False
     query_param_separator: str = '&'
-    fragment: str = None
+    fragment: str = ''
     has_fragment: bool = False
 
     _scheme_regex = re.compile(r'^(?P<scheme>[a-z]+)://')
