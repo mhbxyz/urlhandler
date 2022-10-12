@@ -27,7 +27,7 @@ class URLHandler:
     port: int = None
     has_port: bool = False
     path: str = None
-    query: dict = {}
+    _query: dict = {}
     has_query: bool = False
     query_param_separator: str = '&'
     fragment: str = None
@@ -141,7 +141,7 @@ class URLHandler:
                 self.port = port_match.group('port')
 
             if self.has_query:
-                self.query = self._scan_query(self._query_regex[self._query_end_character].search(url).group('query'))
+                self._query = self._scan_query(self._query_regex[self._query_end_character].search(url).group('query'))
 
             if self.has_fragment:
                 self.fragment = self._fragment_regex.search(url).group('fragment')
@@ -150,8 +150,8 @@ class URLHandler:
 
         params: list = []
 
-        if self.query is not None:
-            for key, value in self.query.items():
+        if self._query is not None:
+            for key, value in self._query.items():
                 if type(value) is dict:
                     value = json.dumps(value).replace(' ', '')
                 else:
@@ -178,7 +178,7 @@ class URLHandler:
         url += self.host if self.host is not None else ''
         url += f':{self.port}' if self.port is not None else ''
         url += f'/{self.path}' if self.path is not None else ''
-        url += f'?{self._get_query_string()}' if self.query is not None else ''
+        url += f'?{self._get_query_string()}' if self._query is not None else ''
         url += f'#{self.fragment}' if self.fragment is not None else ''
 
         return url
@@ -187,7 +187,7 @@ class URLHandler:
         return self.get_url()
 
     def add_query_param(self, name, value):
-        self.query.update({name: value})
+        self._query.update({name: value})
 
     def remove_query_param(self, name):
-        self.query.pop(name, None)
+        self._query.pop(name, None)
