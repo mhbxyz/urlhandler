@@ -26,7 +26,7 @@ class URLHandler:
     host: str = None
     port: int = None
     has_port: bool = False
-    _path: str = None
+    _path: list = None
     _query: dict = {}
     has_query: bool = False
     query_param_separator: str = '&'
@@ -130,7 +130,7 @@ class URLHandler:
             self.host = self._host_regex[self._host_start_character].search(url).group('host')
             path_match = self._path_regex[self._path_end_character].search(url)
             if path_match is not None:
-                self._path = path_match.group('path')
+                self._path = path_match.group('path').split('/')
 
             if self.has_user_info:
                 self.user_info = self._user_info_regex.search(url).groupdict()
@@ -177,7 +177,7 @@ class URLHandler:
         url += f'{self.user_info["user"]}:{self.user_info["password"]}@' if self.user_info is not None else ''
         url += self.host if self.host is not None else ''
         url += f':{self.port}' if self.port is not None else ''
-        url += f'/{self._path}' if self._path is not None else ''
+        url += f'/{"/".join(self._path)}' if self._path is not None else ''
         url += f'?{self._get_query_string()}' if self._query is not None else ''
         url += f'#{self.fragment}' if self.fragment is not None else ''
 
@@ -193,5 +193,5 @@ class URLHandler:
         self._query.pop(name, None)
 
     @property
-    def query(self):
+    def query(self) -> str:
         return self._get_query_string()
